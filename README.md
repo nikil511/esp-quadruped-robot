@@ -1,5 +1,5 @@
 # ESP Quadruped Robot
-This is open soruce quadruped robot with 3D Printable files and firmware for ESP8266 (In my case Wemos D1 Mini).
+This is open soruce quadruped robot with 3D Printable files and firmware ~~for ESP8266 (In my case Wemos D1 Mini).~~ ESP32 (FireBeetle)
 
 It is based on Jason's Workshop Q1 Mini and Q1 Lite projects:
 ![ESP Quadruped Robot rendered](docs/pics/robot-rendered.png)
