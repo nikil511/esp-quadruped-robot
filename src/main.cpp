@@ -1,26 +1,30 @@
-#include <ESP8266WiFi.h>
+//#include <ESP8266WiFi.h>
 #include "ESPAsyncWebServer.h"
 #include <ArduinoOTA.h>
 #include <Servo.h>
 #include <EEPROM.h>
+#include <SPIFFS.h>
 #include <SPIFFSEditor.h>
 #include <ESPAsyncWiFiManager.h>         //https://github.com/tzapu/WiFiManager
 #include "animations.h"
 
+void runServoPrg(int servoPrg[][numberOfACE], int step);
+void eepromClear();
+
 AsyncWebServer server(80);
 DNSServer dns;
 
-const uint8_t FRONT_RIGHT_FOOT = D7;
-const uint8_t FRONT_RIGHT_LEG = D6;
+const uint8_t FRONT_RIGHT_FOOT = 25;
+const uint8_t FRONT_RIGHT_LEG = 26;
 
-const uint8_t REAR_RIGHT_LEG = D5;
-const uint8_t REAR_RIGHT_FOOT = D8;
+const uint8_t REAR_RIGHT_LEG = 27;
+const uint8_t REAR_RIGHT_FOOT = 9;
 
-const uint8_t FRONT_LEFT_FOOT = D3;
-const uint8_t FRONT_LEFT_LEG = D2;
+const uint8_t FRONT_LEFT_FOOT = 10;
+const uint8_t FRONT_LEFT_LEG = 13;
 
-const uint8_t REAR_LEFT_LEG = D1;
-const uint8_t REAR_LEFT_FOOT = D4;
+const uint8_t REAR_LEFT_LEG = 5;
+const uint8_t REAR_LEFT_FOOT = 2;
 
 const int numberOfServos = 8; // Number of servos
 
@@ -119,8 +123,10 @@ void setup() {
   }
 
   AsyncWiFiManager wifiManager(&server,&dns);
+  wifiManager.setDebugOutput(true);
   wifiManager.autoConnect();
-  ArduinoOTA.setHostname("quadruped-v1-wemos-d1-mini");
+ 
+  ArduinoOTA.setHostname("quadruped");
   ArduinoOTA.begin();
 
   server.on("/api/move", [](AsyncWebServerRequest *request){
